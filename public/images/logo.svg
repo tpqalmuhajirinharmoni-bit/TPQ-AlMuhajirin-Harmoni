@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D9B36A"/>
+      <stop offset="100%" stop-color="#A77A3C"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1F4F4A"/>
+      <stop offset="100%" stop-color="#3A716B"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="#F8F3EB" stroke="#D9B36A" stroke-width="4"/>
+  <path d="M32 74C32 63.5066 41.5066 54 52 54H68C78.4934 54 88 63.5066 88 74V88H32V74Z" fill="#fff" stroke="#1F4F4A" stroke-width="3"/>
+  <path d="M32 74C42.6667 66 48 62 60 62C72 62 77.3333 66 88 74" fill="url(#goldGrad)" opacity="0.16"/>
+  <path d="M40 62L60 50L80 62V72L60 58L40 72V62Z" fill="url(#greenGrad)"/>
+  <path d="M52 28C45 28 40 34 40 45H80C80 34 75 28 68 28C64 28 60 31 60 36C60 31 56 28 52 28Z" fill="#1F4F4A"/>
+  <path d="M55 46C53.3431 46 52 47.3431 52 49C52 50.6569 53.3431 52 55 52C56.6569 52 58 50.6569 58 49C58 47.3431 56.6569 46 55 46Z" fill="#D9B36A"/>
+  <path d="M64 46C62.3431 46 61 47.3431 61 49C61 50.6569 62.3431 52 64 52C65.6569 52 67 50.6569 67 49C67 47.3431 65.6569 46 64 46Z" fill="#D9B36A"/>
+  <path d="M60 40C58 40 56 42 56 45H64C64 42 62 40 60 40Z" fill="#D9B36A"/>
+  <path d="M60 19C50 27 42 36 42 45H78C78 36 70 27 60 19Z" fill="url(#goldGrad)" opacity="0.95"/>
+  <path d="M58 19H62V32H58V19Z" fill="#1F4F4A"/>
+</svg>

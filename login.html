@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - TPQ Al Muhajirin Harmoni</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8000/css/style.css" />
+  </head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <a href="http://127.0.0.1:8000" class="brand-logo" aria-label="TPQ Al Muhajirin Harmoni Logo">
+                  <img src="http://127.0.0.1:8000/uploads/logo.png" alt="TPQ Al Muhajirin Harmoni" class="brand-mark" />
+              </a>
+      <div class="brand-copy">
+        <h1>TPQ Al Muhajirin Harmoni</h1>
+        <p>Belajar Al-Qur'an dengan semangat harmoni islami</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="http://127.0.0.1:8000">Beranda</a>
+      <a href="http://127.0.0.1:8000/blog">Blog</a>
+      <a href="http://127.0.0.1:8000/documentation">Dokumentasi</a>
+      <a href="http://127.0.0.1:8000/contact">Hubungi Kami</a>
+      <a href="http://127.0.0.1:8000/profil-tpq">Profil TPQ</a>
+
+              <a href="http://127.0.0.1:8000/login" class="button secondary">Login</a>
+          </nav>
+  </header>
+
+  <main class="page-content">
+    <section class="hero" style="max-width: 450px; margin: 3rem auto;">
+  <h2 style="margin-bottom: 1.5rem;">Masuk ke Sistem</h2>
+  
+  
+  <form method="POST" action="http://127.0.0.1:8000/login" class="card-form">
+    <input type="hidden" name="_token" value="U7W0Zx7oMQhkAafsddddF8ncfGgskWySAxInD3g2" autocomplete="off">
+    <label>
+      Nama Pengguna
+      <input 
+        type="text" 
+        name="username" 
+        value=""
+        placeholder="contoh: nurul" 
+        required 
+        autofocus
+      />
+    </label>
+
+    <label>
+      Kata Sandi
+      <input 
+        type="password" 
+        name="password" 
+        placeholder="kata sandi" 
+        required 
+      />
+    </label>
+
+    <p style="margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem;">
+      Masuk menggunakan username dan password Anda. Sistem akan mendeteksi hak akses secara otomatis.
+    </p>
+
+    <div>
+      <button type="submit" class="button">Masuk</button>
+      <a href="http://127.0.0.1:8000" class="button secondary">Batal</a>
+    </div>
+  </form>
+
+  <p style="margin-top: 1.25rem; color: var(--muted); text-align: center;">
+    Belum punya akun? <a href="http://127.0.0.1:8000/register" style="color: var(--accent); font-weight: 600;">Daftar sekarang</a>.
+  </p>
+</section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 TPQ Al Muhajirin Harmoni | Harmoni dalam Iman dan Ilmu</p>
+  </footer>
+
+  <script src="http://127.0.0.1:8000/js/main.js"></script>
+  </body>
+</html>

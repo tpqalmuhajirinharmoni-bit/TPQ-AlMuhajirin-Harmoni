@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+
+define('LARAVEL_START', microtime(true));
+
+$__DIR = dirname(__FILE__);
+
+// If the user calls this file directly, start the "serve" command.
+if (php_sapi_name() == 'cli-server' && $_SERVER['SCRIPT_FILENAME'] === __FILE__) {
+    if (file_exists($__DIR . '/public' . $_SERVER['REQUEST_URI'])) {
+        return false;
+    }
+}
+
+require_once $__DIR . '/vendor/autoload.php';
+
+$app = require_once $__DIR . '/bootstrap/app.php';
+
+$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+
+exit($kernel->handle(new Symfony\Component\Console\Input\ArgvInput, new Symfony\Component\Console\Output\ConsoleOutput));

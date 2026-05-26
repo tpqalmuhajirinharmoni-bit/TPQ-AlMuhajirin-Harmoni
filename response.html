@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - TPQ Al Muhajirin Harmoni</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8000/css/style.css" />
+  </head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <a href="http://127.0.0.1:8000" class="brand-logo" aria-label="TPQ Al Muhajirin Harmoni Logo">
+                  <img src="http://127.0.0.1:8000/uploads/logo.png" alt="TPQ Al Muhajirin Harmoni" class="brand-mark" />
+              </a>
+      <div class="brand-copy">
+        <h1>TPQ Al Muhajirin Harmoni</h1>
+        <p>Belajar Al-Qur'an dengan semangat harmoni islami</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="http://127.0.0.1:8000">Beranda</a>
+      <a href="http://127.0.0.1:8000/blog">Blog</a>
+      <a href="http://127.0.0.1:8000/documentation">Dokumentasi</a>
+      <a href="http://127.0.0.1:8000/contact">Hubungi Kami</a>
+      <a href="http://127.0.0.1:8000/profil-tpq">Profil TPQ</a>
+
+          <a href="http://127.0.0.1:8000/new-santri">Pendaftaran</a>
+          <a href="http://127.0.0.1:8000/santri">Data Santri</a>
+          <a href="http://127.0.0.1:8000/evaluation">Penilaian</a>
+          <a href="http://127.0.0.1:8000/organization">Organisasi</a>
+          <a href="http://127.0.0.1:8000/teachers">Guru</a>
+          <a href="http://127.0.0.1:8000/finance">Keuangan</a>
+          <a href="http://127.0.0.1:8000/forum">Forum</a>
+
+          <a href="http://127.0.0.1:8000/profile">Profil Saya</a>
+          <a href="http://127.0.0.1:8000/admin">Admin</a>
+          <form method="POST" action="http://127.0.0.1:8000/logout" style="display:inline">
+            <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">
+            <button type="submit" class="nav-logout-button">Keluar (admin)</button>
+          </form>
+          </nav>
+  </header>
+
+  <main class="page-content">
+    <style>
+  .dashboard-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .dashboard-header h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.8rem;
+  }
+
+  .dashboard-header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+  }
+
+  .statistics-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .statistics-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0.5rem 0;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .colored-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .colored-stat-card {
+    border-radius: 8px;
+    padding: 1.5rem;
+    color: white;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+  }
+
+  .colored-stat-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .colored-stat-card.blue {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .colored-stat-card.green {
+    background: linear-gradient(135deg, #00a651 0%, #1b7e45 100%);
+  }
+
+  .colored-stat-card.pink {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  }
+
+  .colored-stat-card.orange {
+    background: linear-gradient(135deg, #fa7e1e 0%, #d62828 100%);
+  }
+
+  .colored-stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+  }
+
+  .colored-stat-label {
+    font-size: 0.9rem;
+    opacity: 0.95;
+    font-weight: 500;
+  }
+
+  .success-message {
+    background: #e8f6ea;
+    border: 1px solid #b2d8b0;
+    margin: 1rem 0;
+    padding: 1rem;
+    color: #1f4f20;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+  }
+
+  .dashboard-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .dashboard-sidebar {
+    position: sticky;
+    top: 1rem;
+    align-self: start;
+  }
+
+  .sidebar-group {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 18px;
+    padding: 1.4rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-group h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #333;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+  }
+
+  .admin-nav-button {
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: #f7f7f7;
+    padding: 0.95rem 1rem;
+    border-radius: 14px;
+    color: #1f4f4a;
+    font-size: 0.98rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .admin-nav-button:hover {
+    background: #e8f3f1;
+  }
+
+  .admin-nav-button.active {
+    background: #1f4f4a;
+    color: #fff;
+  }
+
+  .sidebar-link {
+    display: block;
+    width: 100%;
+    padding: 0.95rem 1rem;
+    margin-top: 0.5rem;
+    border-radius: 14px;
+    background: #f7f7f7;
+    color: #1f4f4a;
+    text-decoration: none;
+    font-size: 0.98rem;
+    transition: background 0.2s ease;
+  }
+
+  .sidebar-link:hover {
+    background: #e8f3f1;
+  }
+
+  .quick-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .quick-link-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 1.25rem;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(15,23,42,0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .quick-link-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(15,23,42,0.08);
+  }
+
+  .quick-link-card a {
+    display: inline-block;
+    color: #2563eb;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .dashboard-content {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .admin-panel {
+    display: none;
+  }
+
+  .admin-panel.active {
+    display: block;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .dashboard-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 24px rgba(15,23,42,0.04);
+  }
+
+  .card-form label {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #334155;
+  }
+
+  .card-form input,
+  .card-form select,
+  .card-form textarea {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: #0f172a;
+    background: #f8fafc;
+  }
+
+  .card-form textarea {
+    resize: vertical;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.95rem 1.3rem;
+    border-radius: 9999px;
+    border: none;
+    background: #2563eb;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .button:hover {
+    background: #1d4ed8;
+  }
+
+  .chart-placeholder {
+    min-height: 220px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #475569;
+    background: #f8fafc;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .dashboard-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .dashboard-sidebar {
+      position: static;
+    }
+  }
+</style>
+
+<div class="dashboard-header">
+  <h2>Dashboard Administrator</h2>
+  <p>Statistik TPQ Al Muhajirin Harmoni Tahun Anggaran 2026</p>
+</div>
+
+
+<div class="dashboard-layout">
+  <aside class="dashboard-sidebar">
+    <div class="sidebar-group">
+      <h4>Menu Admin</h4>
+      <button type="button" class="admin-nav-button active" data-target="overview">Ringkasan</button>
+      <button type="button" class="admin-nav-button" data-target="santri-form">Santri</button>
+      <button type="button" class="admin-nav-button" data-target="guru-form">Guru</button>
+      <button type="button" class="admin-nav-button" data-target="materi-form">Materi</button>
+      <button type="button" class="admin-nav-button" data-target="schedule-form">Jadwal</button>
+    </div>
+    <div class="sidebar-group">
+      <h4>Konten</h4>
+      <button type="button" class="admin-nav-button" data-target="announcement-form">Pengumuman</button>
+      <button type="button" class="admin-nav-button" data-target="post-form">Posting</button>
+      <button type="button" class="admin-nav-button" data-target="edit-post-form">Update Post</button>
+      <button type="button" class="admin-nav-button" data-target="logo-form">Logo</button>
+      <button type="button" class="admin-nav-button" data-target="documentation-form">Dokumentasi</button>
+    </div>
+    <div class="sidebar-group">
+      <h4>Data CRUD</h4>
+      <a href="http://127.0.0.1:8000/admin/data/santri" class="sidebar-link">Data Santri</a>
+      <a href="http://127.0.0.1:8000/admin/data/guru" class="sidebar-link">Data Guru</a>
+      <a href="http://127.0.0.1:8000/admin/data/wali-santri" class="sidebar-link">Data Wali Santri</a>
+      <a href="http://127.0.0.1:8000/admin/data/user" class="sidebar-link">Data User</a>
+      <a href="http://127.0.0.1:8000/admin/data/keuangan" class="sidebar-link">Data Keuangan</a>
+      <a href="http://127.0.0.1:8000/admin/data/peralatan" class="sidebar-link">Data Peralatan</a>
+      <a href="http://127.0.0.1:8000/admin/tpq-profile/edit" class="sidebar-link">Profil TPQ</a>
+      <a href="http://127.0.0.1:8000/admin/contact-us/manage" class="sidebar-link">Kontak</a>
+    </div>
+    <div class="sidebar-group">
+      <h4>Pengaturan</h4>
+      <button type="button" class="admin-nav-button" data-target="finance-form">Keuangan</button>
+      <button type="button" class="admin-nav-button" data-target="user-form">User</button>
+      <button type="button" class="admin-nav-button" data-target="chart-panel">Grafik</button>
+    </div>
+  </aside>
+
+  <div class="dashboard-content">
+    <section class="admin-panel active" id="overview">
+      <div class="statistics-section">
+        <h3 class="statistics-title">📊 Ringkasan</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">🏫</div>
+            <div class="stat-number">0</div>
+            <div class="stat-label">Kelas/Grup</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👨‍🏫</div>
+            <div class="stat-number">1</div>
+            <div class="stat-label">Guru/Pembimbing</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📖</div>
+            <div class="stat-number">0</div>
+            <div class="stat-label">Materi Pembelajaran</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-number">0</div>
+            <div class="stat-label">Jadwal Aktif</div>
+          </div>
+        </div>
+        <div class="colored-stats-grid">
+          <div class="colored-stat-card blue">
+            <div class="stat-icon">👥</div>
+            <div class="colored-stat-number">5</div>
+            <div class="colored-stat-label">Total User</div>
+          </div>
+          <div class="colored-stat-card green">
+            <div class="stat-icon">👨‍🎓</div>
+            <div class="colored-stat-number">1</div>
+            <div class="colored-stat-label">Santri Terdaftar</div>
+          </div>
+          <div class="colored-stat-card pink">
+            <div class="stat-icon">📝</div>
+            <div class="colored-stat-number">0</div>
+            <div class="colored-stat-label">Surat Izin</div>
+          </div>
+          <div class="colored-stat-card orange">
+            <div class="stat-icon">📄</div>
+            <div class="colored-stat-number">1</div>
+            <div class="colored-stat-label">Postingan Blog</div>
+          </div>
+        </div>
+
+        <div class="quick-links">
+          <div class="quick-link-card">
+            <h4>Kelola Santri</h4>
+            <a href="http://127.0.0.1:8000/admin/data/santri">Buka Data Santri</a>
+          </div>
+          <div class="quick-link-card">
+            <h4>Kelola Guru</h4>
+            <a href="http://127.0.0.1:8000/admin/data/guru">Buka Data Guru</a>
+          </div>
+          <div class="quick-link-card">
+            <h4>Kelola Keuangan</h4>
+            <a href="http://127.0.0.1:8000/admin/data/keuangan">Buka Data Keuangan</a>
+          </div>
+          <div class="quick-link-card">
+            <h4>Kelola Kontak</h4>
+            <a href="http://127.0.0.1:8000/admin/contact-us/manage">Buka Kontak</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="santri-form" class="dashboard-card admin-panel">
+      <h3>Input Data Santri</h3>
+      <form method="POST" action="http://127.0.0.1:8000/admin/santri" class="card-form">
+        <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">        <label>
+          Nama Santri
+          <input type="text" name="name" placeholder="Masukkan nama santri" required />
+        </label>
+        <label>
+          Username
+          <input type="text" name="username" placeholder="Username santri" required />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" placeholder="Email santri" required />
+        </label>
+        <button type="submit" class="button">Simpan Santri</button>
+      </form>
+    </section>
+
+    <section id="finance-form" class="dashboard-card admin-panel">
+      <h3>Input Data Pemasukan & Pengeluaran</h3>
+      <form method="POST" action="http://127.0.0.1:8000/admin/finance" class="card-form">
+        <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">        <label>
+          Tipe Transaksi
+          <select name="type" required>
+            <option value="income">Pemasukan</option>
+            <option value="expense">Pengeluaran</option>
+          </select>
+        </label>
+        <label>
+          Jumlah (Rp)
+          <input type="number" name="amount" placeholder="0" required />
+        </label>
+        <label>
+          Kategori
+          <input type="text" name="category" placeholder="Contoh: Sumbangan" />
+        </label>
+        <label>
+          Keterangan
+          <textarea name="description" rows="3" placeholder="Deskripsi transaksi"></textarea>
+        </label>
+        <label>
+          Tanggal
+          <input type="date" name="transaction_date" value="2026-05-24" required />
+        </label>
+        <button type="submit" class="button">Catat Transaksi</button>
+        <div style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <a href="http://127.0.0.1:8000/admin/finance/export/csv" class="button" style="background:#1b5e20;">Unduh CSV</a>
+          <a href="http://127.0.0.1:8000/admin/finance/export/pdf" class="button" style="background:#0d47a1;">Buka Laporan</a>
+        </div>
+      </form>
+    </section>
+
+    <section id="guru-form" class="dashboard-card admin-panel">
+      <h3>Input Data Guru</h3>
+      <form method="POST" action="http://127.0.0.1:8000/admin/guru" class="card-form">
+        <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">        <label>
+          Nama Guru
+          <input type="text" name="name" placeholder="Masukkan nama guru" required />
+        </label>
+        <label>
+          Username
+          <input type="text" name="username" placeholder="Username guru (opsional)" />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" placeholder="Email guru (opsional)" />
+        </label>
+        <label>
+          Mata Pelajaran
+          <input type="text" name="specialty" placeholder="Contoh: Al-Qur'an" />
+        </label>
+        <label>
+          Kontak
+          <input type="text" name="contact" placeholder="Email / Telepon" />
+        </label>
+        <button type="submit" class="button">Simpan Guru</button>
+      </form>
+    </section>
+
+    <section id="materi-form" class="dashboard-card admin-panel">
+      <h3>Input Data Materi</h3>
+      <form method="POST" action="http://127.0.0.1:8000/admin/material" class="card-form">
+        <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">        <label>
+          Judul Materi
+          <input type="text" name="title" placeholder="Judul materi" required />
+        </label>
+        <label>
+          Kategori
+          <input type="text" name="category" placeholder="Contoh: Tajwid" />
+        </label>
+        <label>
+          Deskripsi Singkat
+          <textarea name="description" rows="3" placeholder="Ringkas deskripsi materi"></textarea>
+        </label>
+        <button type="submit" class="button">Tambah Materi</button>
+      </form>
+    </section>
+
+    <section id="schedule-form" class="dashboard-card admin-panel">
+      <h3>Input Jadwal Kegiatan Belajar</h3>
+      <form method="POST" action="http://127.0.0.1:8000/admin/schedule" class="card-form">
+        <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">        <label>
+          Hari
+          <input type="text" name="day" placeholder="Senin" required />
+        </label>
+        <label>
+          Waktu
+          <input type="text" name="time" placeholder="08:00 - 10:00" required />
+        </label>
+        <label>
+          Kelas / Grup
+          <input type="text" name="group" placeholder="Grup Tahfidz" />
+        </label>
+        <label>
+          Aktivitas
+          <input type="text" name="activity" placeholder="Contoh: Hafalan Surah" required />
+        </label>
+        <button type="submit" class="button">Simpan Jadwal</button>
+      </form>
+    </section>
+
+    <section id="announcement-form" class="dashboard-card admin-panel">
+      <h3>Buat Pengumuman</h3>
+      <form method="POST" action="http://127.0.0.1:8000/admin/announcement" class="card-form">
+        <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">        <label>
+          Judul Pengumuman
+          <input type="text" name="title" placeholder="Judul pengumuman" required />
+        </label>
+        <label>
+          Isi Pengumuman
+          <textarea name="content" rows="5" placeholder="Tulis informasi penting" required></textarea>
+        </label>
+        <button type="submit" class="button">Publikasikan</button>
+      </form>
+    </section>
+
+    <section id="post-form" class="dashboard-card admin-panel">
+      <h3>Buat Posting</h3>
+      <form method="POST" action="http://127.0.0.1:8000/admin/post" class="card-form">
+        <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">        <label>
+          Judul Post
+          <input type="text" name="title" placeholder="Judul artikel atau berita" required />
+        </label>
+        <label>
+          Konten Singkat
+          <textarea name="summary" rows="4" placeholder="Ringkasan posting"></textarea>
+        </label>
+        <label>
+          Konten Lengkap
+          <textarea name="content" rows="5" placeholder="Tulis isi posting" required></textarea>
+        </label>
+        <button type="submit" class="button">Terbitkan Post</button>
+      </form>
+    </section>
+
+    <section id="edit-post-form" class="dashboard-card admin-panel">
+      <h3>Update Post Blog</h3>
+      <form method="POST" action="http://127.0.0.1:8000/admin/post/update" class="card-form">
+        <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">        <label>
+          Pilih Post
+          <select name="post_id" required>
+            <option value="">Pilih postingan...</option>
+                          <option value="1">aaa</option>
+                      </select>
+        </label>
+        <label>
+          Judul Baru
+          <input type="text" name="title" placeholder="Judul baru" required />
+        </label>
+        <label>
+          Ringkasan Baru
+          <textarea name="summary" rows="3" placeholder="Ringkasan posting"></textarea>
+        </label>
+        <label>
+          Konten Baru
+          <textarea name="content" rows="5" placeholder="Konten posting" required></textarea>
+        </label>
+        <button type="submit" class="button">Perbarui Post</button>
+      </form>
+    </section>
+
+    <section id="logo-form" class="dashboard-card admin-panel">
+      <h3>Ubah Logo Situs</h3>
+      <form method="POST" action="http://127.0.0.1:8000/admin/logo" class="card-form" enctype="multipart/form-data">
+        <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">        <label>
+          Unggah Logo Baru
+          <input type="file" name="logo" accept="image/png,image/jpeg,image/svg+xml" required />
+        </label>
+        <button type="submit" class="button">Unggah Logo</button>
+      </form>
+    </section>
+
+    <section id="documentation-form" class="dashboard-card admin-panel">
+      <h3>Upload Dokumentasi</h3>
+      <form method="POST" action="http://127.0.0.1:8000/admin/documentation" class="card-form" enctype="multipart/form-data">
+        <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">        <label>
+          Judul Dokumentasi
+          <input type="text" name="title" placeholder="Judul dokumentasi" required />
+        </label>
+        <label>
+          Keterangan
+          <textarea name="description" rows="3" placeholder="Deskripsi singkat"></textarea>
+        </label>
+        <label>
+          Tipe File
+          <select name="type" required>
+            <option value="image">Gambar</option>
+            <option value="video">Video</option>
+          </select>
+        </label>
+        <label>
+          Unggah File
+          <input type="file" name="file" accept="image/*,video/*" required />
+        </label>
+        <button type="submit" class="button">Upload Dokumentasi</button>
+      </form>
+    </section>
+
+    <section id="user-form" class="dashboard-card admin-panel">
+      <h3>Edit Data User</h3>
+      <form method="POST" action="http://127.0.0.1:8000/admin/user" class="card-form">
+        <input type="hidden" name="_token" value="yvkJw0Jp0GtqxXQo6uY77rKrrgS8CESSGPMn08Az" autocomplete="off">        <label>
+          User ID
+          <input type="number" name="user_id" placeholder="Masukkan ID user" required />
+        </label>
+        <label>
+          Role Baru
+          <select name="role" required>
+            <option value="admin">Admin</option>
+            <option value="guru">Guru</option>
+            <option value="wali-santri">Wali Santri</option>
+            <option value="santri">Santri</option>
+          </select>
+        </label>
+        <label>
+          Status Akun
+          <select name="status" required>
+            <option value="Aktif">Aktif</option>
+            <option value="Nonaktif">Nonaktif</option>
+          </select>
+        </label>
+        <button type="submit" class="button">Update User</button>
+      </form>
+    </section>
+
+    <section id="chart-panel" class="dashboard-card admin-panel">
+      <h3>Grafik Siswa</h3>
+      <div class="chart-placeholder">
+        <span>Grafik perkembangan jumlah siswa akan tampil di sini.</span>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.admin-nav-button');
+    const panels = document.querySelectorAll('.admin-panel');
+
+    function showPanel(target) {
+      panels.forEach(panel => panel.classList.toggle('active', panel.id === target));
+      buttons.forEach(button => button.classList.toggle('active', button.dataset.target === target));
+      const element = document.getElementById(target);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener('click', function () {
+        showPanel(this.dataset.target);
+      });
+    });
+
+    showPanel('overview');
+  });
+</script>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 TPQ Al Muhajirin Harmoni | Harmoni dalam Iman dan Ilmu</p>
+  </footer>
+
+  <script src="http://127.0.0.1:8000/js/main.js"></script>
+  </body>
+</html>
